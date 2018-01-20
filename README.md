@@ -1,0 +1,1 @@
+# kt-zabbix-sender
