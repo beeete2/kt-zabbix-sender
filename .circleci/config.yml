@@ -10,7 +10,7 @@ jobs:
           command: docker-compose build
       - run:
           name: docker-compose up
-          command: docker-compose up -d
+          command: DOCKER_UID=$UID DOCKER_GID=$GID docker-compose up -d
       - run:
           name: sleep for waiting launch db
           command: sleep 5

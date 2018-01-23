@@ -27,15 +27,24 @@ class ZabbixSender(
                 output.flush()
 
                 socket.getInputStream().use { input ->
-                    val buffer = input.readBytes()
-                    if (buffer.size < 13) {
+                    val buffer = ByteArray(1024)
+                    var counter = 0
+
+                    while (true) {
+                        val read = input.read(buffer, counter, buffer.size - counter)
+                        if (read <= 0) {
+                            break
+                        }
+                        counter += read
+                    }
+
+                    if (counter < 13) {
                         return ZabbixResponse(hasError = true)
                     }
 
                     // 13 = header(5) + datalen(8)
                     val jsonString = String(buffer, 13, buffer.size - 13)
-                    val zabbixResponse = objectMapper.readValue(jsonString, ZabbixResponse::class.java)
-                    return zabbixResponse
+                    return objectMapper.readValue(jsonString, ZabbixResponse::class.java)
                 }
             }
         }
