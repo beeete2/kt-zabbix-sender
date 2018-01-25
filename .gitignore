@@ -24,3 +24,6 @@
 # IntelliJ
 out/
 build/
+
+# Ruby
+vendor/

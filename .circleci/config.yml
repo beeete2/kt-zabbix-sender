@@ -10,13 +10,27 @@ jobs:
           command: docker-compose build
       - run:
           name: docker-compose up
-          command: DOCKER_UID=$UID DOCKER_GID=$GID docker-compose up -d
+          command: docker-compose up -d
       - run:
           name: sleep for waiting launch db
           command: sleep 5
       - run:
-          name: test
-          command: docker-compose run java sh gradlew build
+          name: test and build
+          command: DOCKER_UID=$UID DOCKER_GID=$GID docker-compose run java sh gradlew build
       - run:
           name: docker-compose down
           command: docker-compose down
+      - restore_cache:
+          name: Restore cache for Gemfile
+          key: gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install gems
+          command: bundle install --path vendor/bundle
+      - save_cache:
+          name: Save chache for Gemfile
+          key: gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Run danger
+          command: bundle exec danger
