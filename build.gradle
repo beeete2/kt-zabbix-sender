@@ -1,0 +1,57 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.1.61'
+        jacksonVersion = '2.9.3'
+        ktlintGradleVersion = '3.0.0'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath("gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:${ktlintGradleVersion}")
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+group = 'beeete2.kt.zabbix.sender'
+version = '0.0.1'
+sourceCompatibility = 1.8
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.9.0'
+    testCompile 'io.github.hengyunabc:zabbix-api:0.0.2'
+    testCompile 'org.slf4j:jcl-over-slf4j:1.7.5'
+    testCompile 'com.natpryce:konfig:version=1.6.2.1'
+    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+}
+
+ktlint {
+    version = "0.15.0"
+    debug = true
+    verbose = true
+    android = false
+    reporter = "checkstyle"
+    ignoreFailures = true
+}
