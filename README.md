@@ -2,7 +2,7 @@
 
 Zabbix Sender for kotlin 
 
-Implement Zabbix Sender for Java example 
+Implement Zabbix Sender for Java example  
 https://www.zabbix.org/wiki/Docs/protocols/zabbix_sender/1.8/java_example
 
 Example.
@@ -18,4 +18,3 @@ val zabbixConfig = ZabbixConfig(host = "127.0.0.1")
 val zabbixSender = ZabbixSender(zabbixConfig)
 val zabbixResponse = zabbixSender.send(zabbixRequest)
 ```
-
