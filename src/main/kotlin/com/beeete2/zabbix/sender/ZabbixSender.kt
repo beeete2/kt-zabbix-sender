@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.net.InetSocketAddress
 import java.net.Socket
 
-
 class ZabbixSender(
         private val zabbixConfig: ZabbixConfig = ZabbixConfig(),
         private val objectMapper: ObjectMapper = ObjectMapper(),
@@ -71,5 +70,4 @@ class ZabbixSender(
         )
         return datalen
     }
-
 }

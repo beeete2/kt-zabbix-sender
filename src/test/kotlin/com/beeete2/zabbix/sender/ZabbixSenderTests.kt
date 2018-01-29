@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
-
 class ZabbixSenderTests {
 
     lateinit var config: Configuration
@@ -120,5 +119,4 @@ class ZabbixSenderTests {
         val server by stringType
         val web by stringType
     }
-
 }
