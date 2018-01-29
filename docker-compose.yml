@@ -1,0 +1,47 @@
+version: '3.3'
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+      MYSQL_ROOT_PASSWORD: zabbix
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:alpine-3.0-latest
+    environment:
+      DB_SERVER_HOST: mysql
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+      MYSQL_ROOT_PASSWORD: zabbix
+    links:
+      - "mysql"
+    ports:
+      - "10051:10051"
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-mysql:alpine-3.0-latest
+    environment:
+      DB_SERVER_HOST: mysql
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+      MYSQL_ROOT_PASSWORD: zabbix
+    links:
+      - "mysql"
+      - "zabbix-server"
+    ports:
+      - "80:80"
+  java:
+    image: circleci/openjdk
+    user: "${DOCKER_UID}:${DOCKER_GID}"
+    tty: true
+    environment:
+      ZABBIX_SERVER: zabbix-server
+      ZABBIX_WEB: zabbix-web
+    volumes:
+      - .:/repo
+    working_dir: /repo
+    links:
+      - "zabbix-server"
+      - "zabbix-web"
