@@ -21,7 +21,7 @@ jobs:
           command: DOCKER_UID=$UID DOCKER_GID=$GID docker-compose run java sh gradlew build
       - save_cache:
           key: jar-{{ checksum "build.gradle" }}
-          pahts:
+          paths:
             - .gradle
       - run:
           name: docker-compose down
