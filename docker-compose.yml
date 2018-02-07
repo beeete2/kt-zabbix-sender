@@ -39,6 +39,7 @@ services:
     environment:
       ZABBIX_SERVER: zabbix-server
       ZABBIX_WEB: zabbix-web
+      GRADLE_USER_HOME: /repo/.gradle
     volumes:
       - .:/repo
     working_dir: /repo

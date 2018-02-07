@@ -14,9 +14,15 @@ jobs:
       - run:
           name: sleep for waiting launch db
           command: sleep 5
+      - restore_cache:
+          key: jar-{{ checksum "build.gradle" }}
       - run:
           name: test and build
           command: DOCKER_UID=$UID DOCKER_GID=$GID docker-compose run java sh gradlew build
+      - save_cache:
+          key: jar-{{ checksum "build.gradle" }}
+          paths:
+            - .gradle
       - run:
           name: docker-compose down
           command: docker-compose down
