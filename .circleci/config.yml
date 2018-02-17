@@ -10,7 +10,7 @@ jobs:
           command: docker-compose build
       - run:
           name: docker-compose up
-          command: docker-compose up -d
+          command: DOCKER_UID=$(id -u) DOCKER_GID=$(id -g) docker-compose up -d
       - run:
           name: sleep for waiting launch db
           command: sleep 5
@@ -18,11 +18,17 @@ jobs:
           key: jar-{{ checksum "build.gradle" }}
       - run:
           name: test and build
-          command: DOCKER_UID=$UID DOCKER_GID=$GID docker-compose run java sh gradlew build
+          command: DOCKER_UID=$(id -u) DOCKER_GID=$(id -g) docker-compose run java sh gradlew build
       - save_cache:
           key: jar-{{ checksum "build.gradle" }}
           paths:
             - .gradle
+      - run:
+          name: Run Allure
+          command: |-
+            docker run -it --rm -v $(readlink -f build):/output -w /output \
+              -u $(id -u):$(id -g) beeete2/docker-allure2 \
+              allure generate /output/test-results/test/ -o /output/reports/allure2/ --clean
       - run:
           name: docker-compose down
           command: docker-compose down
@@ -40,3 +46,6 @@ jobs:
       - run:
           name: Run danger
           command: bundle exec danger
+      - store_artifacts:
+          path: build/reports/allure2
+          destination: allure-reports
