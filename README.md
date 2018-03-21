@@ -1,4 +1,5 @@
-# kt-zabbix-sender
+kt-zabbix-sender [![CircleCI](https://circleci.com/gh/beeete2/kt-zabbix-sender/tree/master.svg?style=svg)](https://circleci.com/gh/beeete2/kt-zabbix-sender/tree/master)
+========================================
 
 Zabbix Sender for kotlin 
 
